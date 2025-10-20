@@ -1,12 +1,13 @@
-name: Publish to PyPI
+name: Publish nastya-tail to PyPI
 
 on:
   release:
     types: [created]
-  workflow_dispatch:  # Дозволяє запускати вручну для тестування
+  workflow_dispatch:
 
 jobs:
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     
     steps:
@@ -25,6 +26,9 @@ jobs:
     
     - name: Build package
       run: python -m build
+    
+    - name: Check package
+      run: twine check dist/*
     
     - name: Publish to PyPI
       env:
